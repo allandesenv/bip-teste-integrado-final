@@ -1,0 +1,10 @@
+# git
+.git
+.gitignore
+
+# maven build outputs
+**/target
+
+# node artifacts
+frontend/node_modules
+frontend/dist
