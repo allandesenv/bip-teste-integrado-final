@@ -78,6 +78,15 @@ export class AppComponent implements OnInit {
     });
   }
 
+  coerceNonNegativeBeneficioValue(): void {
+    const control = this.beneficioForm.controls.valor;
+    const numericValue = Number(control.value);
+
+    if (!Number.isNaN(numericValue) && numericValue < 0) {
+      control.setValue(0);
+    }
+  }
+
   startEdit(item: Beneficio): void {
     this.editingId = item.id;
     this.beneficioForm.patchValue({

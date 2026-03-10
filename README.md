@@ -2,8 +2,8 @@
 
 Projeto fullstack com arquitetura em camadas para gestao de beneficios:
 - DB (PostgreSQL + scripts SQL)
-- EJB (regra transacional de transferencia)
-- Backend Spring Boot (CRUD + integracao EJB)
+- Modulo de dominio legado `ejb-module` (regra transacional de transferencia)
+- Backend Spring Boot (CRUD + integracao com o servico de transferencia)
 - Frontend Angular (CRUD + transferencia)
 
 ## Arquitetura
@@ -13,6 +13,11 @@ Projeto fullstack com arquitetura em camadas para gestao de beneficios:
 - `backend-module/`: API REST em camadas (`controller -> service -> repository -> integration`)
 - `frontend/`: app Angular 17 consumindo o backend
 - `docker-compose.yml`: orquestracao de `postgres`, `backend`, `frontend` e runner de testes EJB
+
+Decisao arquitetural:
+- O nome `BeneficioEjbService` foi mantido por compatibilidade com o desafio.
+- A implementacao adotada e um servico de dominio puro, gerenciado pelo Spring, sem container Jakarta EE/EJB real.
+- A integracao backend -> modulo de transferencia acontece por bean Spring e retry para contencao transacional.
 
 ## Requisitos
 
@@ -42,6 +47,8 @@ Com backend em execucao:
 ```bash
 mvn -B test
 ```
+
+Os testes de integracao com Testcontainers sao executados automaticamente quando Docker esta disponivel.
 
 ### Testes EJB via Docker Compose
 ```bash

@@ -1,20 +1,20 @@
 package com.example.ejb;
 
-import jakarta.ejb.Stateless;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.LockModeType;
-import jakarta.persistence.PersistenceContext;
+import jakarta.persistence.LockTimeoutException;
+import jakarta.persistence.PersistenceException;
+import jakarta.persistence.PessimisticLockException;
 import java.math.BigDecimal;
+import java.util.Map;
 import java.util.Objects;
 
-@Stateless
 public class BeneficioEjbService {
 
-    @PersistenceContext
-    private EntityManager em;
+    private static final String LOCK_TIMEOUT_HINT = "jakarta.persistence.lock.timeout";
+    private static final int LOCK_TIMEOUT_MS = 250;
 
-    public BeneficioEjbService() {
-    }
+    private final EntityManager em;
 
     public BeneficioEjbService(EntityManager em) {
         this.em = em;
@@ -42,7 +42,19 @@ public class BeneficioEjbService {
     }
 
     private Beneficio findForUpdate(Long id) {
-        Beneficio beneficio = em.find(Beneficio.class, id, LockModeType.PESSIMISTIC_WRITE);
+        Beneficio beneficio;
+        try {
+            beneficio = em.find(
+                    Beneficio.class,
+                    id,
+                    LockModeType.PESSIMISTIC_WRITE,
+                    Map.of(LOCK_TIMEOUT_HINT, LOCK_TIMEOUT_MS)
+            );
+        } catch (LockTimeoutException | PessimisticLockException ex) {
+            throw ex;
+        } catch (PersistenceException ex) {
+            throw ex;
+        }
         if (beneficio == null) {
             throw new IllegalArgumentException("Beneficio nao encontrado para id: " + id);
         }
