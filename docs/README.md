@@ -34,3 +34,18 @@
 - Frontend: `http://localhost:4200`
 - Swagger UI: `http://localhost:8080/swagger-ui.html`
 - OpenAPI JSON: `http://localhost:8080/api-docs`
+
+## Fluxos de erro na transferencia
+
+- `400`: payload invalido (`fromId == toId`, nulos, amount <= 0)
+- `404`: beneficio nao encontrado
+- `409`: saldo insuficiente ou contencao transacional esgotada
+
+## Observabilidade
+
+- Estrategia atual: mensagens padronizadas via `ApiError`
+- Evolucao: logs estruturados para transferencia, metricas de latencia e retries
+
+## ADRs
+
+- `docs/adr/0001-locking-strategy.md`
