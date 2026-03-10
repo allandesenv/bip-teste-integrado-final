@@ -35,6 +35,7 @@
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
     "postcss-media-query-parser": "^0.2.3",
-    "typescript": "~5.4.2"
+    "typescript": "~5.4.2",
+    "webpack-subresource-integrity": "^5.1.0"
   }
 }

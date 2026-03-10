@@ -84,6 +84,22 @@ Exemplo de payload para transferencia:
 }
 ```
 
+## Fluxos de erro esperados
+
+- `400`: payload invalido (ex.: `fromId == toId`, campos nulos, amount <= 0).
+- `404`: beneficio nao encontrado.
+- `409`: saldo insuficiente ou contencao transacional esgotada.
+- `500`: erro inesperado.
+
+## Observabilidade
+
+- Logs de erros retornam `message` padronizada pela API.
+- Para evolucao: adicionar logs de auditoria da transferencia e metricas (latencia, taxa de erro, retries).
+
+## Idempotencia (consideracao futura)
+
+- Para operacoes criticas, pode ser adicionado `Idempotency-Key` na API e persistencia de requests.
+
 ## Encerrar ambiente
 
 ```bash
